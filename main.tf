@@ -46,6 +46,22 @@ resource "nsxt_policy_group" "WebServers" {
     }
 }
 
+
+resource "nsxt_policy_group" "MySQLClient" {
+  display_name = "MySQLClient - to be deleted"
+  description  = "MySQLClient Group provisioned by Terraform"
+}
+
+resource "nsxt_policy_group" "MySQLServer" {
+  display_name = "MySQLServer - to be deleted"
+  description  = "MySQLServer Group provisioned by Terraform"
+}
+
+resource "nsxt_policy_group" "WebServer" {
+  display_name = "WebServer - to be deleted"
+  description  = "WebServer Group provisioned by Terraform"
+}
+
 resource "nsxt_policy_service" "WebServerServices" {
   description  = "Web Server Serivces provisioned by Terraform"
   display_name = "Web Server Services"
