@@ -45,3 +45,18 @@ resource "nsxt_policy_group" "WebServer" {
         }
     }
 }
+
+resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
+  description  = "Private Cloud Blueprint Policies Section provisioned by Terraform"
+  display_name = "Private Cloud Blueprint Policies"
+  category = "Application"
+  rule {
+    display_name = "Allow Web Traffic"
+    description  = ""
+    action       = "ALLOW"
+    ip_version  = "IPV4"
+    services = [nsxt_policy_service.HTTP.path,nsxt_policy_service.HTTPS.path]
+    destination_groups = [nsxt_policy_group.WebServer.path]
+    scope = [nsxt_policy_group.WebServer.path]
+  }
+}
