@@ -14,7 +14,7 @@ resource "nsxt_policy_group" "MySQLClients" {
       condition {
           key         = "Tag"
           member_type = "SegmentPort"
-          operator    = "EQUALS"
+          operator    = "CONTAINS"
           value       = "Role|MySQLClient"
       }
   }
@@ -27,7 +27,7 @@ resource "nsxt_policy_group" "MySQLServers" {
         condition {
             key         = "Tag"
             member_type = "SegmentPort"
-            operator    = "EQUALS"
+            operator    = "CONTAINS"
             value       = "Role|MySQLServer"
         }
     }
@@ -40,7 +40,7 @@ resource "nsxt_policy_group" "WebServers" {
         condition {
             key         = "Tag"
             member_type = "SegmentPort"
-            operator    = "EQUALS"
+            operator    = "CONTAINS"
             value       = "Role|WebServer"
         }
     }
