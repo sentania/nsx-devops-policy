@@ -8,8 +8,8 @@ provider "nsxt" {
 
 
 resource "nsxt_policy_group" "MySQLClients" {
-  display_name = "MySQLClient"
-  description  = "MySQLClient Group provisioned by Terraform"
+  display_name = "MySQLClients"
+  description  = "MySQLClients Group provisioned by Terraform"
   criteria {
       condition {
           key         = "Tag"
@@ -21,8 +21,8 @@ resource "nsxt_policy_group" "MySQLClients" {
 }
 
 resource "nsxt_policy_group" "MySQLServers" {
-  display_name = "MySQLServer"
-  description  = "MySQLServer Group provisioned by Terraform"
+  display_name = "MySQLServers"
+  description  = "MySQLServers Group provisioned by Terraform"
     criteria {
         condition {
             key         = "Tag"
@@ -34,8 +34,8 @@ resource "nsxt_policy_group" "MySQLServers" {
 }
 
 resource "nsxt_policy_group" "WebServers" {
-  display_name = "WebServer"
-  description  = "WebServer Group provisioned by Terraform"
+  display_name = "WebServers"
+  description  = "WebServers Group provisioned by Terraform"
   criteria {
         condition {
             key         = "Tag"
