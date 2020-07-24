@@ -32,6 +32,7 @@ resource "nsxt_policy_group" "MySQLServer" {
         }
     }
 }
+
 resource "nsxt_policy_group" "WebServer" {
   display_name = "WebServer"
   description  = "WebServer Group provisioned by Terraform"
