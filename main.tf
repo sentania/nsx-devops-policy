@@ -86,8 +86,3 @@ resource "nsxt_policy_service" "MySQLServices" {
   }
 }
 
-resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
-  description  = "Private Cloud Blueprint Policies Section provisioned by Terraform"
-  display_name = "Private Cloud Blueprint Policies"
- 
-}
