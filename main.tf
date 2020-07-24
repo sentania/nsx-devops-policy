@@ -46,6 +46,18 @@ resource "nsxt_policy_group" "WebServer" {
     }
 }
 
+resource "nsxt_policy_service" "WebServerServices" {
+  description  = "Web Server Serivces provisioned by Terraform"
+  display_name = "Web Server Services"
+
+  l4_port_set_entry {
+    display_name      = "Web Server Services"
+    description       = "TCP port 80 and 443"
+    protocol          = "TCP"
+    destination_ports = [ "80", "443" ]
+  }
+}
+
 resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
   description  = "Private Cloud Blueprint Policies Section provisioned by Terraform"
   display_name = "Private Cloud Blueprint Policies"
@@ -55,7 +67,7 @@ resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
     description  = ""
     action       = "ALLOW"
     ip_version  = "IPV4"
-    services = [nsxt_policy_service.HTTP.path,nsxt_policy_service.HTTPS.path]
+    services = [nsxt_policy_service.WebServerServices.path]
     destination_groups = [nsxt_policy_group.WebServer.path]
     scope = [nsxt_policy_group.WebServer.path]
   }
