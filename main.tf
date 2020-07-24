@@ -14,10 +14,14 @@ resource "nsxt_policy_group" "MySQLClients" {
       condition {
           key         = "Tag"
           member_type = "SegmentPort"
-          operator    = "CONTAINS"
+          operator    = "EQUALS"
           value       = "Role|MySQLClient"
       }
-  }
+    }
+    tag {
+        scope = "Role"
+        tag   = "MySQLClient"
+    }
 }
 
 resource "nsxt_policy_group" "MySQLServers" {
@@ -27,22 +31,30 @@ resource "nsxt_policy_group" "MySQLServers" {
         condition {
             key         = "Tag"
             member_type = "SegmentPort"
-            operator    = "CONTAINS"
+            operator    = "EQUALS"
             value       = "Role|MySQLServer"
         }
     }
+    tag {
+    scope = "Role"
+    tag   = "MySQLServer"
+  }
 }
 
 resource "nsxt_policy_group" "WebServers" {
-  display_name = "WebServers"
-  description  = "WebServers Group provisioned by Terraform"
-  criteria {
+    display_name = "WebServers"
+    description  = "WebServers Group provisioned by Terraform"
+    criteria {
         condition {
             key         = "Tag"
             member_type = "SegmentPort"
-            operator    = "CONTAINS"
+            operator    = "EQUALS"
             value       = "Role|WebServer"
         }
+    }
+    tag {
+        scope = "Role"
+        tag   = "WebServer"
     }
 }
 
@@ -56,6 +68,7 @@ resource "nsxt_policy_service" "WebServerServices" {
     protocol          = "TCP"
     destination_ports = [ "80", "443" ]
   }
+  
 }
 
 resource "nsxt_policy_service" "MySQLServices" {
