@@ -89,24 +89,5 @@ resource "nsxt_policy_service" "MySQLServices" {
 resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
   description  = "Private Cloud Blueprint Policies Section provisioned by Terraform"
   display_name = "Private Cloud Blueprint Policies"
-  category = "Application"
-  rule {
-    display_name = "Web Traffic"
-    description  = ""
-    action       = "ALLOW"
-    ip_version  = "IPV4"
-    services = [nsxt_policy_service.WebServerServices.path]
-    destination_groups = [nsxt_policy_group.WebServers.path]
-    scope = [nsxt_policy_group.WebServers.path]
-  }
-    rule {
-    display_name = "MySQL Traffic"
-    description  = ""
-    action       = "ALLOW"
-    ip_version  = "IPV4"
-    services = [nsxt_policy_service.MySQLServices.path]
-    source_groups = [nsxt_policy_group.MySQLClients.path]
-    destination_groups = [nsxt_policy_group.MySQLServers.path]
-    scope = [nsxt_policy_group.MySQLClients.path,nsxt_policy_group.MySQLServers.path]
-  }
+ 
 }
