@@ -10,6 +10,14 @@ provider "nsxt" {
 resource "nsxt_policy_group" "MySQLClient" {
   display_name = "MySQLClient"
   description  = "MySQLClient Group provisioned by Terraform"
+  criteria {
+      condition {
+          key         = "Tag"
+          member_type = "VirtualMachine"
+          operator    = "EQUALS"
+          value       = "Role|MySQLClient"
+      }
+  }
 }
 
 resource "nsxt_policy_group" "MySQLServer" {
@@ -21,3 +29,45 @@ resource "nsxt_policy_group" "WebServer" {
   display_name = "WebServer"
   description  = "WebServer Group provisioned by Terraform"
 }
+
+/*
+resource "nsxt_policy_group" "MySQLClient" {
+  display_name = "MySQLClient"
+  description  = "MySQLClient Group provisioned by Terraform"
+  criteria {
+        condition {
+            key         = "Tag"
+            member_type = "VirtualMachine"
+            operator    = "EQUALS"
+            value       = "Role|MySQLClient"
+        }
+    }
+}
+
+resource "nsxt_policy_group" "MySQLServer" {
+  display_name = "MySQLServer"
+  description  = "MySQLServer Group provisioned by Terraform"
+  criteria {
+        condition {
+            key         = "Tag"
+            member_type = "VirtualMachine"
+            operator    = "EQUALS"
+            value       = "Role|MySQLServer"
+        }
+    }
+}
+
+resource "nsxt_policy_group" "WebServer" {
+  display_name = "WebServer"
+  description  = "WebServer Group provisioned by Terraform"
+  criteria {
+        condition {
+            key         = "Tag"
+            member_type = "VirtualMachine"
+            operator    = "EQUALS"
+            value       = "Role|WebServer"
+        }
+    }
+  }
+}
+*/
