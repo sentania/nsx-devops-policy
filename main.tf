@@ -89,7 +89,7 @@ resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
     action       = "ALLOW"
     ip_version  = "IPV4"
     services = [nsxt_policy_service.MySQLServices.path]
-    source_groups = [nsxt_policy_group.MySQLClints.path]
+    source_groups = [nsxt_policy_group.MySQLClients.path]
     destination_groups = [nsxt_policy_group.MySQLServers.path]
     scope = [nsxt_policy_group.MySQLClients.path,nsxt_policy_group.MySQLServers.path]
   }
