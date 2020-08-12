@@ -15,12 +15,12 @@ resource "nsxt_policy_group" "MySQLClients" {
           key         = "Tag"
           member_type = "SegmentPort"
           operator    = "EQUALS"
-          value       = "Role|MySQLClient"
+          value       = "MySQLClient|Role"
       }
     }
     tag {
-        scope = "Role"
-        tag   = "MySQLClient"
+        scope = "MySQLClient"
+        tag   = "Role"
     }
 }
 
@@ -32,12 +32,12 @@ resource "nsxt_policy_group" "MySQLServers" {
             key         = "Tag"
             member_type = "SegmentPort"
             operator    = "EQUALS"
-            value       = "Role|MySQLServer"
+            value       = "MySQLServer|Role"
         }
     }
     tag {
-    scope = "Role"
-    tag   = "MySQLServer"
+    scope = "MySQLServer"
+    tag   = "Role"
   }
 }
 
@@ -49,12 +49,46 @@ resource "nsxt_policy_group" "WebServers" {
             key         = "Tag"
             member_type = "SegmentPort"
             operator    = "EQUALS"
-            value       = "Role|WebServer"
+            value       = "WebServer|Role"
         }
     }
     tag {
-        scope = "Role"
-        tag   = "WebServer"
+        scope = "WebServer"
+        tag   = "Role"
+    }
+}
+
+resource "nsxt_policy_group" "MSSQL Servers" {
+    display_name = "MSSQL Servers"
+    description  = "MSSQL Servers Group provisioned by Terraform"
+    criteria {
+        condition {
+            key         = "Tag"
+            member_type = "SegmentPort"
+            operator    = "EQUALS"
+            value       = "MSSQLServer|Role"
+        }
+    }
+    tag {
+        scope = "MSSQLServer"
+        tag   = "Role"
+    }
+}
+
+resource "nsxt_policy_group" "MSSQL Servers" {
+    display_name = "MSSQL Clients"
+    description  = "MSSQL Clients Group provisioned by Terraform"
+    criteria {
+        condition {
+            key         = "Tag"
+            member_type = "SegmentPort"
+            operator    = "EQUALS"
+            value       = "MSSQLClient|Role"
+        }
+    }
+    tag {
+        scope = "MSSQLClient"
+        tag   = "Role"
     }
 }
 
@@ -80,6 +114,18 @@ resource "nsxt_policy_service" "MySQLServices" {
     description       = "TCP port 3306"
     protocol          = "TCP"
     destination_ports = [ "3306" ]
+  }
+}
+
+resource "nsxt_policy_service" "MSSQLServices" {
+  description  = "MSSQL Serivces provisioned by Terraform"
+  display_name = "MSSQL Services"
+
+  l4_port_set_entry {
+    display_name      = "MSSQL Server Services"
+    description       = "TCP port 1433"
+    protocol          = "TCP"
+    destination_ports = [ "1433" ]
   }
 }
 
