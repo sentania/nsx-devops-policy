@@ -58,7 +58,7 @@ resource "nsxt_policy_group" "WebServers" {
     }
 }
 
-resource "nsxt_policy_group" "MSSQL Servers" {
+resource "nsxt_policy_group" "MSSQLServers" {
     display_name = "MSSQL Servers"
     description  = "MSSQL Servers Group provisioned by Terraform"
     criteria {
@@ -75,7 +75,7 @@ resource "nsxt_policy_group" "MSSQL Servers" {
     }
 }
 
-resource "nsxt_policy_group" "MSSQL Servers" {
+resource "nsxt_policy_group" "MSSQLClients" {
     display_name = "MSSQL Clients"
     description  = "MSSQL Clients Group provisioned by Terraform"
     criteria {
@@ -150,6 +150,17 @@ resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
     services = [nsxt_policy_service.MySQLServices.path]
     source_groups = [nsxt_policy_group.MySQLClients.path]
     destination_groups = [nsxt_policy_group.MySQLServers.path]
+    scope = [nsxt_policy_group.MySQLClients.path,nsxt_policy_group.MySQLServers.path]
+  }
+
+      rule {
+    display_name = "MySQL Traffic"
+    description  = ""
+    action       = "ALLOW"
+    ip_version  = "IPV4"
+    services = [nsxt_policy_service.MSSQLServices.path]
+    source_groups = [nsxt_policy_group.MSSQLClients.path]
+    destination_groups = [nsxt_policy_group.MSSQLServers.path]
     scope = [nsxt_policy_group.MySQLClients.path,nsxt_policy_group.MySQLServers.path]
   }
 }
