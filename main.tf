@@ -6,6 +6,22 @@ provider "nsxt" {
     allow_unverified_ssl = true
 }
 
+resource "nsxt_policy_group" "AllowSSH" {
+  display_name = "Allow SSH"
+  description  = "Allow SSH Group provisioned by Terraform"
+  criteria {
+      condition {
+          key         = "Tag"
+          member_type = "SegmentPort"
+          operator    = "EQUALS"
+          value       = "AllowSSH|Role"
+      }
+    }
+    tag {
+        scope = "AllowSSH"
+        tag   = "Role"
+    }
+}
 
 resource "nsxt_policy_group" "MySQLClients" {
   display_name = "MySQLClients"
@@ -129,6 +145,18 @@ resource "nsxt_policy_service" "MSSQLServices" {
   }
 }
 
+resource "nsxt_policy_service" "SSHService" {
+  description  = "SSH Serivces provisioned by Terraform"
+  display_name = "SSH Services"
+
+  l4_port_set_entry {
+    display_name      = "SSH Server Services"
+    description       = "TCP port 22"
+    protocol          = "TCP"
+    destination_ports = [ "22" ]
+  }
+}
+
 resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
   description  = "Private Cloud Blueprint Policies Section provisioned by Terraform"
   display_name = "Private Cloud Blueprint Policies"
@@ -153,7 +181,7 @@ resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
     scope = [nsxt_policy_group.MySQLClients.path,nsxt_policy_group.MySQLServers.path]
   }
 
-      rule {
+    rule {
     display_name = "MySQL Traffic"
     description  = ""
     action       = "ALLOW"
@@ -162,5 +190,15 @@ resource "nsxt_policy_security_policy" "PrivateCloudPolicies" {
     source_groups = [nsxt_policy_group.MSSQLClients.path]
     destination_groups = [nsxt_policy_group.MSSQLServers.path]
     scope = [nsxt_policy_group.MySQLClients.path,nsxt_policy_group.MySQLServers.path]
+  }
+
+    rule {
+    display_name = "SSH Traffic"
+    description  = ""
+    action       = "ALLOW"
+    ip_version  = "IPV4"
+    services = [nsxt_policy_service.SSHService.path]
+    destination_groups = [nsxt_policy_group.AllowSSH.path]
+    scope = [nsxt_policy_group.AllowSSH.path]
   }
 }
